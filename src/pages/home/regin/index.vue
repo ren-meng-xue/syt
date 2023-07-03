@@ -7,9 +7,7 @@
       <ul class="hospital">
         <li class="active">全部</li>
         <li>昌平区</li>
-        <li></li>
-        <li></li>
-        <li></li>
+        <li v-for="item in 20" :key="item">昌平区</li>
       </ul>
     </div>
   </div>
@@ -20,27 +18,35 @@ import { } from "vue"
 </script>
 
 <style lang="scss" scoped>
-.regin{
-   color: #7f7f7f;
-   margin-top:10px;
-   .content{
-    display:flex;
-    .left{
-        margin-right: 10px;
+.regin {
+  color: #7f7f7f;
+  margin-top: 10px;
+
+  .content {
+    display: flex;
+
+    .left {
+      margin-right: 10px;
+      width: 39px;
     }
-    .hospital{
-      display:flex;
-       li {
-        margin-right: 10px;
+
+    .hospital {
+      display: flex;
+      flex-wrap: wrap;
+
+      li {
+        margin-right: 5px;
+        margin-bottom: 10px;
+
         &.active {
           color: #55a6fe;
         }
       }
-      li:hover{
-      color: #55a6fe;
-      cursor: pointer;
+
+      li:hover {
+        color: #55a6fe;
+        cursor: pointer;
       }
     }
-   }
-}
-</style>
+  }
+}</style>
