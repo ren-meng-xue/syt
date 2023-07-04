@@ -9,6 +9,9 @@ import router from './router'
 // 引入全局组件--顶部、底部都是全局组件
 import HospitalTop from '@/components/hospital_top/index.vue'
 import HosiptalBottom from '@/components/hospital_bottom/index.vue'
+
+//@ts-ignore 忽略ts的校验文件
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 //利用createApp方法创建应用实例，且将应用实例挂载到挂载点上
 const app =createApp(App)
 app.component('HospitalTop', HospitalTop);
@@ -19,6 +22,8 @@ app.component('HosiptalBottom', HosiptalBottom);
 app.use(router)
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-app.use(ElementPlus)
+app.use(ElementPlus,{
+  locale: zhCn,
+})
 
 app.mount('#app')

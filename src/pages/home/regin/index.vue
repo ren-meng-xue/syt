@@ -5,18 +5,44 @@
         地区
       </div>
       <ul class="hospital">
-        <li class="active">全部</li>
-        <li>昌平区</li>
-        <li v-for="item in 20" :key="item">昌平区</li>
+        <li :class="{ active: RegionFlag == '' }" @click="changeRegion('')">全部</li>
+        <li v-for="item in RegionArr" :key="item.value" :class="{ active: RegionFlag == item.value }"
+          @click="changeRegion(item.value)">{{ item.name }}</li>
       </ul>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { } from "vue"
+import { ref, onMounted } from "vue"
+import { reqHospitalLevelAndRegin } from "@/api/home";
+import type { HospitalLevelAndReginArr, HospitalLevelAndReginResponseData } from "@/api/home/type";
+let RegionArr = ref<HospitalLevelAndReginArr>([])
+let RegionFlag = ref<string>('')
+onMounted(() => {
+  getRegin()
+})
+//获取地区的数据
+const getRegin = async () => {
+  let result: HospitalLevelAndReginResponseData = await reqHospitalLevelAndRegin('Beijin')
+  if (result.code == 200) {
+    RegionArr.value = result.data
+  }
+}
+const changeRegion = (level: string) => {
+  RegionFlag.value = level
+  $emits('getRegin', RegionFlag.value)
+}
+
+
+let $emits = defineEmits(['getRegin'])
 </script>
 
+<script lang="ts">
+export default {
+  name: "Region",
+};
+</script>
 <style lang="scss" scoped>
 .regin {
   color: #7f7f7f;
@@ -49,4 +75,5 @@ import { } from "vue"
       }
     }
   }
-}</style>
+}
+</style>
