@@ -4,8 +4,9 @@ import { defineStore } from 'pinia';
 import { reqHospitalDetail } from '@/api/hospital';
 //引入详情ts类型
 import type { HospitalDetail, HosPitalDetail } from '@/api/hospital/type';
+import type {DetailState} from './interface'
 const useDetailStore = defineStore('Detail', {
-  state: () => {
+  state: ():DetailState => {
     return {
       //医院详情的数据
       // hospitalInfo:{}
