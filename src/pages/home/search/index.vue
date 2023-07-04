@@ -10,7 +10,7 @@ import {Search,} from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import { ref } from "vue"
 import { reqHospitalInfo } from '@/api/home'
-import type { HospitalInfo,Content } from '@/api/home/type'
+import type { HospitalInfo } from '@/api/home/type'
 //创建路由器对象
 let $router = useRouter()
 //收集搜索的关键字
@@ -38,7 +38,7 @@ const goDetail = (item)=>{
   //item即为选择的那一项 
   //点击推荐项，进入到页面的详情页，需要携带query
   $router.push({
-    path:'/hospital'
+    path:'/hospital/register'
   })
   // $router.push('/hospital')
   console.log(123,'123');

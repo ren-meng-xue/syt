@@ -53,7 +53,7 @@ const goDetail = ()=>{
   console.log(props.hospitalInfo);
   
 $router.push({
-  path:'/hospital'
+  path:'/hospital/register'
 })
 }
 </script>

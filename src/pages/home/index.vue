@@ -21,7 +21,9 @@
           :background="true" layout="prev, pager, next, jumper,->,total, sizes," :total="total"
           @current-change="handleCurrentChange" @size-change="handleSizeChange" />
       </el-col>
-      <el-col :span="4">456</el-col>
+      <el-col :span="4">
+      <tip/>
+    </el-col>
     </el-row>
   </div>
 </template>
@@ -37,6 +39,8 @@ import level from './level/index.vue';
 import regin from './regin/index.vue';
 //引入首页卡片
 import card from './card/index.vue';
+//引入右侧组件
+import tip from './tip/index.vue';
 import { ref, onMounted } from 'vue'
 import { reqHospital } from '@/api/home/index.ts'
 import type { HospitalResponseData, Content } from '@/api/home/type.ts'
