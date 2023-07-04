@@ -2,7 +2,7 @@
   <div class="top">
     <div class="content">
       <!-- 左侧 -->
-      <div class="left">
+      <div class="left" @click="goHome">
         <img src="../../assets/images/logo.png" alt="">
         <p>尚医通 预约挂号统一平台</p>
       </div>
@@ -15,7 +15,13 @@
 </template>
 
 <script setup lang="ts">
-import { } from "vue"
+import { useRouter } from "vue-router";
+let $router = useRouter()
+const goHome = ()=>{
+  $router.push({
+    path:'/home'
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -24,7 +30,6 @@ import { } from "vue"
   height: 70px;
   display: flex;
   justify-content: center;
-
   .content {
     width: 1200px;
     background-color: white;
@@ -56,4 +61,5 @@ import { } from "vue"
 
   }
 }
+
 </style>

@@ -91,3 +91,7 @@ export type HospitalLevelAndReginArr = HospitalLevelAndRegin[]
 export interface HospitalLevelAndReginResponseData extends ResponseData {
   data:HospitalLevelAndReginArr
 }
+
+export interface HospitalInfo  extends ResponseData {
+  data:Content
+}
