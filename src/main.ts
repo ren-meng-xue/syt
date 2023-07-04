@@ -12,6 +12,8 @@ import HosiptalBottom from '@/components/hospital_bottom/index.vue'
 
 //@ts-ignore 忽略ts的校验文件
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+//引入大仓库
+import pinia from '@/store'
 //利用createApp方法创建应用实例，且将应用实例挂载到挂载点上
 const app =createApp(App)
 app.component('HospitalTop', HospitalTop);
@@ -25,5 +27,6 @@ import 'element-plus/dist/index.css'
 app.use(ElementPlus,{
   locale: zhCn,
 })
+app.use(pinia)
 
 app.mount('#app')

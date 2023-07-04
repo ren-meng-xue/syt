@@ -50,10 +50,13 @@ import { useRouter } from 'vue-router';
 let $router = useRouter()
 //点击医院卡片的时候，跳转到医院详情页面
 const goDetail = ()=>{
-  console.log(props.hospitalInfo);
+  console.log();
   
 $router.push({
-  path:'/hospital/register'
+  path:'/hospital/register',
+  query:{
+   hoscode:props.hospitalInfo.hoscode
+  }
 })
 }
 </script>

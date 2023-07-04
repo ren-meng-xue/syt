@@ -34,11 +34,14 @@ const fetchData = async(keyword:string,cb:any)=>{
   
 }
 //点击推荐项
-const goDetail = (item)=>{
+const goDetail = (item:any)=>{
   //item即为选择的那一项 
   //点击推荐项，进入到页面的详情页，需要携带query
   $router.push({
-    path:'/hospital/register'
+    path:'/hospital/register',
+    query:{
+      hoscode:item.hoscode
+    }
   })
   // $router.push('/hospital')
   console.log(123,'123');
