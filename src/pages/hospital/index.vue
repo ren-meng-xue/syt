@@ -53,29 +53,36 @@ import {
   Document,
   Menu as IconMenu,
   Setting,
-  InfoFilled,
   Search,
   HomeFilled,
 } from "@element-plus/icons-vue";
-import { useRouter,useRoute } from "vue-router";
-import { onMounted} from 'vue'
+import { useRouter, useRoute } from "vue-router";
+import { onMounted } from 'vue'
 import useDetailStore from '@/store/modules/hospitalDetail'
 //获取仓库对象
 let detailStore = useDetailStore()
 //获取路由器
-let $router= useRouter()
+let $router = useRouter()
 //获取路由信息
 let $route = useRoute()
 // console.log($route.path);
 //左侧菜单点击事件的回调
-const changeAcitve = (path:string)=>{
-  console.log(path,'path');
+const changeAcitve = (path: string) => {
+  console.log(path, 'path');
   //跳转到对应的二级路由 key value一致省略key
-  $router.push({path})
+  $router.push({
+    path, query: {
+      hoscode: $route.query.hoscode
+    }
+  })
 }
-  //组件挂载完毕，通知pinia仓库发请求获取医院详情的数据，存储仓库当中
-onMounted(()=>{
-detailStore.getHospital($route.query.hoscode)
+//组件挂载完毕，通知pinia仓库发请求获取医院详情的数据，存储仓库当中
+onMounted(() => {
+  //获取医院详情的数据
+  detailStore.getHospital($route.query.hoscode as string)
+  //获取某一个医院科室的数据
+
+  detailStore.getDeparment($route.query.hoscode as string)
 })
 </script>
 

@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-import type { HosPitalDetail } from "./type";
+import type { HosPitalDetail,DepartmentResponseData } from "./type";
 enum API{
    HOSPITALDETAIL_URL = '/hosp/hospital/',
     //获取某一个医院的科室的数据
@@ -21,3 +21,6 @@ enum API{
 }
 //获取医院详情的接口
 export const reqHospitalDetail  = (hoscode:string)=>request.get<any,HosPitalDetail>(API.HOSPITALDETAIL_URL+hoscode)
+
+//获取医院科室的接口
+export const reqHospitalDeparment = (hoscode:string)=>request.get<any,DepartmentResponseData>(API.HOSPITALDEPARMENT_URL+hoscode)

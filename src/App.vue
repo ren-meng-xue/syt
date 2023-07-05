@@ -8,6 +8,8 @@
     </div>
     <!-- 底部 -->
     <HosiptalBottom />
+    <!-- 登陆组件 -->
+    <Login/>
   </div>
 </template>
 

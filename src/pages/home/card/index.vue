@@ -49,16 +49,19 @@ let props = defineProps(['hospitalInfo'])
 import { useRouter } from 'vue-router';
 let $router = useRouter()
 //点击医院卡片的时候，跳转到医院详情页面
-const goDetail = ()=>{
-  console.log();
+// const goDetail = ()=>{
+//   console.log(props.hospitalInfo.hoscode,'props.hospitalInfo.hoscode');
   
-$router.push({
-  path:'/hospital/register',
-  query:{
-   hoscode:props.hospitalInfo.hoscode
-  }
-})
-}
+// $router.push({
+//   path:'/hospital/register',
+//   query:{
+//    hoscode:props.hospitalInfo.hoscode
+//   }
+// })
+// }
+const goDetail = () => {
+  $router.push({ path: "/hospital/register",query:{hoscode:props.hospitalInfo.hoscode}});
+};
 </script>
 
 <style lang="scss" scoped>
