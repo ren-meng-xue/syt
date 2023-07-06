@@ -8,13 +8,31 @@
       </div>
       <div class="right">
         <p class="help">帮助中心</p>
-        <p class="login" @click="login">登陆/注册</p>
+        <p class="login" @click="login" v-if="!userStore.userInfo.name">登陆/注册</p>
+       <el-dropdown v-else>
+    <span class="el-dropdown-link">
+    {{ userStore.userInfo.name }}
+      <el-icon class="el-icon--right">
+        <arrow-down />
+      </el-icon>
+    </span>
+    <template #dropdown>
+      <el-dropdown-menu>
+        <el-dropdown-item>实名认证</el-dropdown-item>
+        <el-dropdown-item>挂号订单</el-dropdown-item>
+        <el-dropdown-item>就诊人</el-dropdown-item>
+        <el-dropdown-item  @click="logout">退出登陆</el-dropdown-item>
+      </el-dropdown-menu>
+    </template>
+  </el-dropdown>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ArrowDown } from '@element-plus/icons-vue'
+
 import { useRouter } from "vue-router";
 //获取user仓库的数据
 import useUserStore from '@/store/modules/user'
@@ -27,6 +45,16 @@ const goHome = ()=>{
 }
 const login = ()=>{
     userStore.visiable=true
+}
+//退出登陆
+const logout = ()=>{
+  //通知pinia仓库清楚用户相关信息
+  userStore.logout()
+  
+
+    $router.push({
+    path:'/home'
+  })
 }
 </script>
 

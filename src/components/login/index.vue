@@ -8,15 +8,15 @@
           <el-col :span="12">
             <div class="login">
               <div v-show="scene == 0">
-                <el-form>
-                  <el-form-item>
+                <el-form :model="loginParams" :rules="rules" ref="loginForm">
+                  <el-form-item prop="phone">
                     <el-input placeholder="请输入手机号码" :prefix-icon="User" v-model="loginParams.phone"></el-input>
                   </el-form-item>
-                  <el-form-item>
-                    <el-input placeholder="请输入手机验证码" :prefix-icon="Lock" v-model="loginParams.code"></el-input>
+                  <el-form-item prop="code">
+                    <el-input placeholder="请输入手机验证码" :prefix-icon="Lock" v-model="loginParams.code" :disabled="!isPhone || flag ? true : false"></el-input>
                   </el-form-item>
                   <el-form-item>
-                    <el-button :disabled="!isPhone||flag ? true : false" >
+                    <el-button :disabled="!isPhone || flag ? true : false">
                       <countdown v-if="flag" :flag="flag" @getFlag="getFlag" />
                       <span v-else @click="getCode">
                         获取验证码
@@ -25,7 +25,8 @@
                   </el-form-item>
                 </el-form>
                 <!-- 用户登陆 -->
-                <el-button type="primary" style="width:100%">用户登陆</el-button>
+                <el-button type="primary" style="width:100%" :disabled="!isPhone || loginParams.code?.length < 6"
+                  @click="login">用户登陆</el-button>
                 <div class="bottom" @click="changeScene">
                   <p>微信扫码登陆</p>
                   <svg t="1685263287521" class="icon" viewBox="0 0 1024 1024" version="1.1"
@@ -80,7 +81,7 @@
         </el-row>
       </div>
       <template #footer>
-        <el-button type="primary">关闭窗口</el-button>
+        <el-button type="primary" @click="closeDialog">关闭窗口</el-button>
       </template>
     </el-dialog>
   </div>
@@ -92,9 +93,11 @@ import useUserStore from '@/store/modules/user'
 import { User, Lock } from '@element-plus/icons-vue'
 import { ref, reactive, computed } from 'vue'
 import countdown from '../countdown/index.vue'
+// @ts-ignore
+import { ElMessage } from 'element-plus';
 let userStore = useUserStore()
-
 let scene = ref<number>(0)//0 代表手机号码登录，1代表微信扫码登陆
+let loginForm = ref()
 //定义一个响应式数据控制倒计时组件显示与隐藏
 let flag = ref<boolean>(false)//flag 为真开始倒计时 为假并非倒计时 二选一
 let loginParams = reactive({
@@ -117,6 +120,8 @@ const changeScene = () => {
 
 //获取验证码按钮
 const getCode = async () => {
+  //解决element-plus按钮禁用还能点击
+  if (!isPhone.value || flag.value) return
   //开启倒计时模式
   flag.value = true
   //通知pinia仓库存储验证码
@@ -127,7 +132,7 @@ const getCode = async () => {
 
   } catch (error) {
     //获取验证码失败
-  ElMessage({
+    ElMessage({
       type: "error",
       message: (error as Error).message,
     });
@@ -135,9 +140,81 @@ const getCode = async () => {
 }
 
 //计数器子组件绑定的自定义事件
-const getFlag = (val:boolean)=>{
+const getFlag = (val: boolean) => {
   //当倒计时为0的时候，通知父组件，倒计时是0 flag应该隐藏
-  flag.value=val
+  flag.value = val
+}
+//点击用户登陆按钮
+const login = async () => {
+  //发起仓库去仓库
+  //登陆请求成功：顶部组件需要展示用户名字，对话框关闭
+  // 登陆请求失败：弹出对应登陆失败的错误信息
+
+
+  try {
+    //添加await的目的是必须等待用户登陆成功
+    //用户登陆成功
+    await userStore.userLogin(loginParams)
+    //关闭loginDialog
+    userStore.visiable = false
+
+  } catch (error) {
+    ElMessage({
+      type: "error",
+      error: (error as Error).message
+    })
+  }
+}
+
+//自定义校验规则手机号
+const validatorPhone = (rule:any,value:any,callback:any)=>{
+//rule即为表单校验规则对象
+// value 当前文本的内容
+// callback  回调函数  
+
+//手机号码的正则表达式
+  const reg = /^1((34[0-8])|(8\d{2})|(([35][0-35-9]|4[579]|66|7[35678]|9[1389])\d{1}))\d{7}$/;
+  
+  if(reg.test(value)){
+    
+    callback()
+  }else{
+    callback(new Error('请输入正确的的手机号码格式'))
+  }
+}
+// 验证码自定义校验规则
+const validatorCode = (rule: any, value: any, callBack: any) => {
+  //rule:即为表单校验规则对象
+  //value:即为当前文本的内容
+  //callBack:回调函数
+  if (/^\d{6}$/.test(value)) {
+    callBack();
+  } else {
+    callBack(new Error("请输入正确的验证码格式"));
+  }
+};
+const rules = {
+  // trigger 代表的是表单校验触发的时机：change文本发生变化的时候 blur失去焦点
+  // phone: [
+  //   { required: true, message: '输入手机号十一位', trigger: 'change', min: 11 },
+  // ],
+  // code: [
+  //   { required: true, message: '验证码无比6位', trigger: 'blur', min: 6 },
+  // ]
+  phone:[
+    {
+      trigger: 'change',validator:validatorPhone
+    }
+  ],
+  code:[
+    {
+      trigger: 'change',validator:validatorCode
+    }
+  ]
+}
+//关闭窗口按钮的回调
+const closeDialog = ()=>{
+  userStore.visiable=false
 }
 
 </script>

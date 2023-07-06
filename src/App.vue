@@ -7,12 +7,16 @@
      <router-view></router-view>
     </div>
     <!-- 底部 -->
-    <HosiptalBottom />
+    <HosiptalBottom  />
     <!-- 登陆组件 -->
-    <Login/>
+    <Login v-if="userStore.visiable"/>
   </div>
 </template>
 
+<script lang="ts" setup>
+import useUserStore from './store/modules/user'
+let userStore = useUserStore()
+</script>
 <style lang="scss" scoped>
 .container {
   display: flex;
