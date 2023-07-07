@@ -43,6 +43,12 @@ const useUserStore = defineStore('User', {
       console.log('logout');
       this.userInfo={name:'',token:''}
       REMOVE_TOKEN()
+    },
+    //查询微信扫码的接口（查看本地存储是否存储数据）
+    queryState(){
+      //只要变为场景一，就会触发这个方法
+      console.log(111);
+      //开启定时器每隔一段时间：本地
       
     }
 

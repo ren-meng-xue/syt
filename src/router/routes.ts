@@ -61,5 +61,9 @@ export const constantRoute = [
   {
     path: '/',
     redirect: '/home'
+  },
+  {
+    path:'/wxlogin',
+     component: () => import('@/pages/wxlogin/index.vue')
   }
 ]

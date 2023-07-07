@@ -13,7 +13,8 @@
                     <el-input placeholder="请输入手机号码" :prefix-icon="User" v-model="loginParams.phone"></el-input>
                   </el-form-item>
                   <el-form-item prop="code">
-                    <el-input placeholder="请输入手机验证码" :prefix-icon="Lock" v-model="loginParams.code" :disabled="!isPhone || flag ? true : false"></el-input>
+                    <el-input placeholder="请输入手机验证码" :prefix-icon="Lock" v-model="loginParams.code"
+                      :disabled="!isPhone || flag ? true : false"></el-input>
                   </el-form-item>
                   <el-form-item>
                     <el-button :disabled="!isPhone || flag ? true : false">
@@ -41,7 +42,18 @@
                 </div>
               </div>
               <div class="webchat" v-show="scene == 1">
-                微信扫码登陆结构
+                <!-- 在这个容器当中显示微信扫码登陆页面 -->
+                <div id="login_container">
+                </div>
+                <div class="phone" @click="handler">
+                  <p>手机短信验证码登录</p>
+                  <svg t="1685676069573" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" p-id="2476" width="16" height="16">
+                    <path
+                      d="M820.409449 797.228346q0 25.19685-10.07874 46.866142t-27.716535 38.299213-41.322835 26.204724-50.897638 9.574803l-357.795276 0q-27.212598 0-50.897638-9.574803t-41.322835-26.204724-27.716535-38.299213-10.07874-46.866142l0-675.275591q0-25.19685 10.07874-47.370079t27.716535-38.80315 41.322835-26.204724 50.897638-9.574803l357.795276 0q27.212598 0 50.897638 9.574803t41.322835 26.204724 27.716535 38.80315 10.07874 47.370079l0 675.275591zM738.771654 170.330709l-455.559055 0 0 577.511811 455.559055 0 0-577.511811zM510.992126 776.062992q-21.165354 0-36.787402 15.11811t-15.622047 37.291339q0 21.165354 15.622047 36.787402t36.787402 15.622047q22.173228 0 37.291339-15.622047t15.11811-36.787402q0-22.173228-15.11811-37.291339t-37.291339-15.11811zM591.622047 84.661417q0-8.062992-5.03937-12.598425t-11.086614-4.535433l-128 0q-5.03937 0-10.582677 4.535433t-5.543307 12.598425 5.03937 12.598425 11.086614 4.535433l128 0q6.047244 0 11.086614-4.535433t5.03937-12.598425z"
+                      p-id="2477"></path>
+                  </svg>
+                </div>
               </div>
             </div>
           </el-col>
@@ -91,10 +103,13 @@
 //获取user仓库的数据
 import useUserStore from '@/store/modules/user'
 import { User, Lock } from '@element-plus/icons-vue'
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed,watch } from 'vue'
 import countdown from '../countdown/index.vue'
+import { reqWxLogin } from '@/api/hospital'
+import type { WxLoginRespnsetData } from '@/api/hospital/type'
 // @ts-ignore
 import { ElMessage } from 'element-plus';
+import { GET_TOKEN } from '@/utils/user'
 let userStore = useUserStore()
 let scene = ref<number>(0)//0 代表手机号码登录，1代表微信扫码登陆
 let loginForm = ref()
@@ -113,8 +128,29 @@ let isPhone = computed(() => {
   return reg.test(loginParams.phone)
 })
 //点击微信扫码登陆｜微信小图标 切换为微信扫码
-const changeScene = () => {
+const changeScene = async () => {
   scene.value = 1
+  //生成微信扫码登陆的二维码页面
+  //发请求获取微信扫码需要的二维码参数
+  // 需要向服务器发请求，获取微信扫码登陆页面的参数
+  //还需要携带一个参数，告诉服务器用户授权成功以后重定向到项目的某一个页面
+  let redirect_Url = encodeURIComponent(window.location.origin + `/wxlogin`)//http%3A%2F%2Flocalhost%3A5173 redirect_Url
+  // decodeURIComponent("http%3A%2F%2Flocalhost%3A5173") //'http://localhost:5173'
+  // console.log(redirect_Url,'redirect_Url');
+
+  let result: WxLoginRespnsetData = await reqWxLogin(redirect_Url)
+  console.log(result, 'resultresult');
+
+  // @ts-ignore
+  new WxLogin({
+    self_redirect: true,//手机点击确认登陆后可以在iframe内跳转到redirect_uri
+    id: "login_container", //显示二维码容器的设置
+    appid: result.data.appid, //应用的唯一标识appid，需要向服务端发请求获取
+    scope: "snsapi_login", //当前微信扫码登陆页面已经授权了
+    redirect_uri: result.data.redirectUri,//填写授权回调域路径，就是用户授权成功以后，微信服务器向公司后台推送code地址
+    state: result.data.state,//公司的服务器重定向的地址携带用户信息
+    style: "black",//提供"black"、"white"可选，默认为黑色文字描述。详见文档底部FAQ
+  });
 }
 
 
@@ -167,18 +203,18 @@ const login = async () => {
 }
 
 //自定义校验规则手机号
-const validatorPhone = (rule:any,value:any,callback:any)=>{
-//rule即为表单校验规则对象
-// value 当前文本的内容
-// callback  回调函数  
+const validatorPhone = (rule: any, value: any, callback: any) => {
+  //rule即为表单校验规则对象
+  // value 当前文本的内容
+  // callback  回调函数  
 
-//手机号码的正则表达式
+  //手机号码的正则表达式
   const reg = /^1((34[0-8])|(8\d{2})|(([35][0-35-9]|4[579]|66|7[35678]|9[1389])\d{1}))\d{7}$/;
-  
-  if(reg.test(value)){
-    
+
+  if (reg.test(value)) {
+
     callback()
-  }else{
+  } else {
     callback(new Error('请输入正确的的手机号码格式'))
   }
 }
@@ -201,21 +237,41 @@ const rules = {
   // code: [
   //   { required: true, message: '验证码无比6位', trigger: 'blur', min: 6 },
   // ]
-  phone:[
+  phone: [
     {
-      trigger: 'change',validator:validatorPhone
+      trigger: 'change', validator: validatorPhone
     }
   ],
-  code:[
+  code: [
     {
-      trigger: 'change',validator:validatorCode
+      trigger: 'change', validator: validatorCode
     }
   ]
 }
 //关闭窗口按钮的回调
-const closeDialog = ()=>{
-  userStore.visiable=false
+const closeDialog = () => {
+  userStore.visiable = false
 }
+
+//点击手机短信验证码盒子的回调
+const  handler = ()=>{
+scene.value=0
+}
+
+//监听场景的数据
+watch(()=>scene.value,(val:number)=>{
+if(val==1){
+  //说明是扫码
+  // userStore.queryState()
+  let timer =setInterval(()=>{
+    if(GET_TOKEN()){
+      userStore.visiable = false
+      userStore.userInfo=JSON.parse(GET_TOKEN() as string)
+      clearInterval(timer)
+    }
+  })
+}
+})
 
 </script>
 
@@ -236,7 +292,20 @@ export default {
   .login {
     border: 1px solid #ccc;
     padding: 20px;
+.webchat{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .phone{
+    display: flex;
+     flex-direction: column;
+     align-items: center;
+     p{
+      margin: 10px 0 ;
+     }
 
+  }
+}
     .bottom {
       display: flex;
       flex-direction: column;
@@ -246,6 +315,7 @@ export default {
         margin: 10px 0;
       }
     }
+
   }
 
   .leftContent {
