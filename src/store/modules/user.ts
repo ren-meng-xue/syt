@@ -40,7 +40,6 @@ const useUserStore = defineStore('User', {
     },
     //退出登陆
     logout(){
-      console.log('logout');
       this.userInfo={name:'',token:''}
       REMOVE_TOKEN()
     },

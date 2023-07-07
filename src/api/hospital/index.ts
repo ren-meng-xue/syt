@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-import type { HosPitalDetail,DepartmentResponseData,UserLoginResponseData,LoginData,WxLoginRespnsetData } from "./type";
+import type { HosPitalDetail,DepartmentResponseData,UserLoginResponseData,LoginData,WxLoginRespnsetData,HospitalWordData } from "./type";
 enum API{
    HOSPITALDETAIL_URL = '/hosp/hospital/',
     //获取某一个医院的科室的数据
@@ -34,3 +34,6 @@ export const reqUserLogin = (data:LoginData)=>request.post<any,UserLoginResponse
 
 //获取微信扫码登陆生成二维码需要参数接口
 export const reqWxLogin =(wxRedirectUri:string)=>request.get<any,WxLoginRespnsetData>(API.WXLOGIN_URL+`?wxRedirectUri=${wxRedirectUri}`)
+
+//获取预约挂号的数据
+export const reqHospitalWork = (page:number,limit:number,hoscode:string,depcode:string)=>request.get<any,HospitalWordData>(API.HOSPITALWORK_URL+`${page}/${limit}/${hoscode}/${depcode}`)

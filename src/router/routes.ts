@@ -42,20 +42,20 @@ export const constantRoute = [
           title: '查询'
         }
       },
-      // {
-      //     path: 'register_step1',
-      //     component: () => import('@/pages/hospital/register/register_step1.vue'),
-      //     meta:{
-      //         title:'预约第一步'
-      //     }
-      // },
-      // {
-      //     path: 'register_step2',
-      //     component: () => import('@/pages/hospital/register/register_step2.vue'),
-      //     meta:{
-      //         title:'预约第二步'
-      //     }
-      // }
+      {
+          path: 'register_step1',
+          component: () => import('@/pages/hospital/register/register_step1.vue'),
+          meta:{
+              title:'预约第一步'
+          }
+      },
+      {
+          path: 'register_step2',
+          component: () => import('@/pages/hospital/register/register_step2.vue'),
+          meta:{
+              title:'预约第二步'
+          }
+      }
     ]
   },
   {

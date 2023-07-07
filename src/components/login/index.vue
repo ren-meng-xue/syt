@@ -103,7 +103,7 @@
 //获取user仓库的数据
 import useUserStore from '@/store/modules/user'
 import { User, Lock } from '@element-plus/icons-vue'
-import { ref, reactive, computed,watch } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import countdown from '../countdown/index.vue'
 import { reqWxLogin } from '@/api/hospital'
 import type { WxLoginRespnsetData } from '@/api/hospital/type'
@@ -140,7 +140,6 @@ const changeScene = async () => {
 
   let result: WxLoginRespnsetData = await reqWxLogin(redirect_Url)
   console.log(result, 'resultresult');
-
   // @ts-ignore
   new WxLogin({
     self_redirect: true,//手机点击确认登陆后可以在iframe内跳转到redirect_uri
@@ -210,9 +209,7 @@ const validatorPhone = (rule: any, value: any, callback: any) => {
 
   //手机号码的正则表达式
   const reg = /^1((34[0-8])|(8\d{2})|(([35][0-35-9]|4[579]|66|7[35678]|9[1389])\d{1}))\d{7}$/;
-
   if (reg.test(value)) {
-
     callback()
   } else {
     callback(new Error('请输入正确的的手机号码格式'))
@@ -254,23 +251,23 @@ const closeDialog = () => {
 }
 
 //点击手机短信验证码盒子的回调
-const  handler = ()=>{
-scene.value=0
+const handler = () => {
+  scene.value = 0
 }
 
 //监听场景的数据
-watch(()=>scene.value,(val:number)=>{
-if(val==1){
-  //说明是扫码
-  // userStore.queryState()
-  let timer =setInterval(()=>{
-    if(GET_TOKEN()){
-      userStore.visiable = false
-      userStore.userInfo=JSON.parse(GET_TOKEN() as string)
-      clearInterval(timer)
-    }
-  })
-}
+watch(() => scene.value, (val: number) => {
+  if (val == 1) {
+    //说明是扫码
+    // userStore.queryState()
+    let timer = setInterval(() => {
+      if (GET_TOKEN()) {
+        userStore.visiable = false
+        userStore.userInfo = JSON.parse(GET_TOKEN() as string)
+        clearInterval(timer)
+      }
+    })
+  }
 })
 
 </script>
@@ -292,20 +289,24 @@ export default {
   .login {
     border: 1px solid #ccc;
     padding: 20px;
-.webchat{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .phone{
-    display: flex;
-     flex-direction: column;
-     align-items: center;
-     p{
-      margin: 10px 0 ;
-     }
 
-  }
-}
+    .webchat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .phone {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        p {
+          margin: 10px 0;
+        }
+
+      }
+    }
+
     .bottom {
       display: flex;
       flex-direction: column;
@@ -346,5 +347,4 @@ export default {
     font-size: 20px;
     font-weight: 900;
   }
-}
-</style>
+}</style>
