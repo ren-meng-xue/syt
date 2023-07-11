@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-import type { HosPitalDetail,DepartmentResponseData,UserLoginResponseData,LoginData,WxLoginRespnsetData,HospitalWordData } from "./type";
+import type { HosPitalDetail,DepartmentResponseData,UserLoginResponseData,LoginData,WxLoginRespnsetData,HospitalWordData,DoctorResponseData } from "./type";
 enum API{
    HOSPITALDETAIL_URL = '/hosp/hospital/',
     //获取某一个医院的科室的数据
@@ -37,3 +37,6 @@ export const reqWxLogin =(wxRedirectUri:string)=>request.get<any,WxLoginRespnset
 
 //获取预约挂号的数据
 export const reqHospitalWork = (page:number,limit:number,hoscode:string,depcode:string)=>request.get<any,HospitalWordData>(API.HOSPITALWORK_URL+`${page}/${limit}/${hoscode}/${depcode}`)
+
+//获取医生排班的数据
+export const reqHospitalDoctor = (hoscode:string,depcode:string,workDate:string)=>request.get<any,DoctorResponseData>(API.HOSPITALDOCTOR_URL+`${hoscode}/${depcode}/${workDate}`)

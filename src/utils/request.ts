@@ -4,8 +4,11 @@
 // 2.请求拦截器可以在请求头当中携带公共的参数token
 // 3.响应拦截器：简化服务器返回的数据，处理http网络错误 404 ，500 ，503
 import axios from 'axios';
+//引入用户相关的仓库
+import  useUserStore from '../store/modules/user'
 // @ts-ignore
 import { ElMessage } from 'element-plus';
+import { log } from 'console';
 /***
  * axios是axios提供的对象
  * request也是一个请求，但是request上配置了请求的地址和请求的超时的时间
@@ -20,6 +23,11 @@ const request = axios.create({
 request.interceptors.request.use((config) => {
   //config：请求拦截器回调注入的对象（配置对象）如果不return连请求都发不了，配置对象的身上最重要的一件事情有header属性
   //可以通过请求头携带公共的参数token
+  let userStore  = useUserStore()
+  if(userStore.userInfo.token){
+    config.headers.token = userStore.userInfo.token
+  }
+  
   return config;
 })
 
