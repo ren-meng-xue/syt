@@ -85,7 +85,7 @@
     </el-card>
     <!-- 确定挂号按钮 -->
     <div class="btn">
-      <el-button type="primary" :disabled="currentIndex==-1?true:false">确认挂号</el-button>
+      <el-button type="primary" :disabled="currentIndex==-1?false:false" @click="submit">确认挂号</el-button>
     </div>
   </div>
 </template>
@@ -93,11 +93,17 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
 import { User } from "@element-plus/icons-vue";
-import { useRoute } from 'vue-router'
+import { useRoute,useRouter } from 'vue-router'
 import visitor from './visitor.vue'
 import { reqGetUser, reqDoctorInfo } from "@/api/hospital";
 import type { UserArr, DoctorInfoData, Doctor } from '@/api/hospital/type';
+import {reqSubmitOrder} from '@/api/user'
+import type {SubmitOrder} from '@/api/user/type';
+// @ts-ignore
+import { ElMessage } from "element-plus";
 let $route = useRoute()
+//获取路由器跳转
+let $router = useRouter()
 //存储全部就诊人信息
 let userArr = ref<UserArr>([])
 let doctorInfo = ref<any>({})
@@ -129,6 +135,36 @@ const reqDoctorInfos = async () => {
 const changeIndex =(index:number)=>{
   //存储当前用户选中的就诊人的索引值
   currentIndex.value=index
+}
+
+//确认挂号
+const submit = async ()=>{
+  //医院编号
+  let hoscode = '1000_0'//doctorInfo.value.hoscode
+  //医生的id 
+  let scheduleId = '6225753136a9ba1be763dc18'//doctorInfo.value.id
+  // 就诊人
+  let patientId =206// userArr.value[currentIndex.value].id
+// console.log(patientId,hoscode,scheduleId,'99');
+
+
+  let result :SubmitOrder = await reqSubmitOrder(hoscode,scheduleId,patientId)
+  console.log(result,'result');
+  //提交订单成功
+//   if(result.code==200){
+// $router.push({path:'/user/order',query:{
+//   orderId:424,//result.data
+// }})
+//   }else{
+//     ElMessage({
+// type:'error',
+// message:result.message
+//     })
+//   }
+$router.push({path:'/user/order',query:{
+  orderId:424,//result.data
+}})
+  
 }
 </script>
 
