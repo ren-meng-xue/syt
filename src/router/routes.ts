@@ -63,6 +63,34 @@ export const constantRoute = [
     redirect: '/home'
   },
   {
+    path:'/user',
+    component:()=>import('@/pages/user/index.vue'),
+    children:[
+      {
+        //实名认证
+        path:'authentication',
+        component:()=>import('@/pages/user/authentication/index.vue'),
+      },
+       {
+        //订单
+        path:'order',
+        component:()=>import('@/pages/user/order/index.vue'),
+      },
+       {
+        path:'patient',
+        component:()=>import('@/pages/user/patient/index.vue'),
+      },
+       {
+        path:'profile',
+        component:()=>import('@/pages/user/profile/index.vue'),
+      },
+      {
+        path:'feedback',
+        component:()=>import('@/pages/user/feedback/index.vue'),
+      }
+    ]
+  },
+  {
     path:'/wxlogin',
      component: () => import('@/pages/wxlogin/index.vue')
   }

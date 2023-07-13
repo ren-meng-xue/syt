@@ -66,7 +66,7 @@
             </div>
             <div class="right">
               <div class="money">¥{{ doctor.amount }}</div>
-              <el-button type="primary"> {{ doctor.availableNumber }}</el-button>
+              <el-button type="primary" @click="goStep2(doctor)"> 剩余{{ doctor.availableNumber }}</el-button>
             </div>
           </div>
 
@@ -120,7 +120,7 @@
             </div>
             <div class="right">
               <div class="money">¥{{ doctor.amount }}</div>
-              <el-button type="primary"> {{ doctor.availableNumber }}</el-button>
+              <el-button type="primary" @click="goStep2(doctor)"> 剩余{{ doctor.availableNumber }}</el-button>
             </div>
           </div>
         </div>
@@ -138,9 +138,10 @@ import type {
   HospitalWordData,
   DoctorResponseData,
 } from '@/api/hospital/type'
-import { useRoute } from 'vue-router'
+import { useRoute,useRouter } from 'vue-router'
 import { ref, onMounted, computed } from "vue"
 let $route = useRoute()
+let $router = useRouter()
 let pageNo = ref<number>(1)
 let limit = ref<number>(6)
 //医院科室
@@ -199,6 +200,16 @@ let afterArr = computed(() => {
     return doc.workTime == 1;
   });
 });
+
+//路由跳转进入到选择就诊人页面
+const goStep2 =(doctor:Doctor)=>{
+$router.push({
+  path:'/hospital/register_step2',
+  query:{
+   docId: doctor.id,
+  }
+})
+}
 </script>
 
 <style lang="scss" scoped>
@@ -240,7 +251,7 @@ let afterArr = computed(() => {
         border: 1px solid skyblue;
         margin: 0 5px;
         width: 100%;
-transition: all .3s;
+        transition: all .3s;
         &.active {
           border: 1px solid #ccc;
           color: #7f7f7f;

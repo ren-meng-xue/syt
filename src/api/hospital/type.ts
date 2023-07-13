@@ -149,3 +149,52 @@ export type DocArr = Doctor[];
 export interface DoctorResponseData extends ResponseData {
     data: DocArr
 }
+
+
+
+
+//代表的是一个就诊人数据ts类型
+export interface User {
+    "id": number,
+    "createTime": string,
+    "updateTime": string,
+    "isDeleted": number,
+    "param": {
+        "certificatesTypeString": string,
+        "contactsCertificatesTypeString": string,
+        "cityString": null,
+        "fullAddress": string,
+        "districtString": null,
+        "provinceString": null
+    },
+    "userId": number,
+    "name": number,
+    "certificatesType": string,
+    "certificatesNo": string,
+    "sex": number,
+    "birthdate": string,
+    "phone": string,
+    "isMarry": number,
+    "provinceCode": null,
+    "cityCode": null,
+    "districtCode": null,
+    "address": string,
+    "contactsName": string,
+    "contactsCertificatesType": string,
+    "contactsCertificatesNo": string,
+    "contactsPhone": string,
+    "isInsure": number,
+    "cardNo": null,
+    "status": string
+}
+export type UserArr = User[];
+export interface UserResponseData extends ResponseData {
+    data: UserArr
+}
+
+
+//获取某一个挂号医生数据详情
+
+export interface DoctorInfoData extends ResponseData{
+    data:Doctor
+}

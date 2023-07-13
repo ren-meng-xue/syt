@@ -18,9 +18,10 @@
     </span>
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item>实名认证</el-dropdown-item>
-        <el-dropdown-item>挂号订单</el-dropdown-item>
-        <el-dropdown-item>就诊人</el-dropdown-item>
+        <el-dropdown-item @click="goUser('/user/authentication')">实名认证</el-dropdown-item>
+        <el-dropdown-item @click="goUser('/user/order')">挂号订单</el-dropdown-item>
+        <el-dropdown-item @click="goUser('/user/patient')">就诊人</el-dropdown-item>
+        
         <el-dropdown-item  @click="logout">退出登陆</el-dropdown-item>
       </el-dropdown-menu>
     </template>
@@ -41,6 +42,12 @@ let $router = useRouter()
 const goHome = ()=>{
   $router.push({
     path:'/home'
+  })
+}
+//点击顶部下拉菜单进行路由跳转
+const goUser = (path:string)=>{
+ $router.push({
+    path
   })
 }
 const login = ()=>{
