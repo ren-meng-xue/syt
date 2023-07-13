@@ -162,6 +162,8 @@ let orderInfo = ref<any>({})
 let $route = useRoute()
 //存储二维码需要的路径
 let imgUrl =ref<string>('')
+//存储定时器引用
+let timer = ref<any>();
 //控制对话框显示与隐藏
 let dialogVisible =ref<boolean>(false)
 //组件挂载完毕
@@ -196,6 +198,25 @@ const openDialog= async ()=>{
   //获取支付需要使用二维码信息
  let result:QrCode=await reqQrcode($route.query.orderId as string)
 
+ //询问服务器当前这笔交易的支付结果
+ //只要二维码出来我们需要每隔几秒询问服务器是否支付成功
+ timer.value = setInterval(async () => {
+    let result: PayReslt = await reqQueryPayState($route.query.orderId as string);
+    //如果服务器返回的数据data:true,代表支付成功
+    if (result.data) {
+      //关闭对话框
+      dialogVisible.value = false;
+      //提示信息
+      ElMessage({
+        type: "success",
+        message: "支付成功",
+      });
+      //清除定时器
+      clearInterval(timer.value);
+      //再次获取订单详情的数据
+      getOrderInfo();
+    }
+  }, 2000);
 
 //根据服务器返回二维码信息生成二维码图片 
 
@@ -205,6 +226,11 @@ imgUrl.value= await QRCode.toDataURL(result.data.codeUrl)
 //关闭对话框
 const closeDialog = ()=>{
   dialogVisible.value=false
+  clearInterval(timer.value);
+}
+//对话框右上角关闭的叉子的回调
+const close = ()=>{
+  clearInterval(timer.value);
 }
 </script>
 
