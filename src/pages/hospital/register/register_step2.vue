@@ -85,7 +85,7 @@
     </el-card>
     <!-- 确定挂号按钮 -->
     <div class="btn">
-      <el-button type="primary" :disabled="currentIndex==-1?false:false" @click="submit">确认挂号</el-button>
+      <el-button type="primary" :disabled="currentIndex==-1?true:false" @click="submit">确认挂号</el-button>
     </div>
   </div>
 </template>
@@ -140,11 +140,11 @@ const changeIndex =(index:number)=>{
 //确认挂号
 const submit = async ()=>{
   //医院编号
-  let hoscode = '1000_0'//doctorInfo.value.hoscode
+  let hoscode = doctorInfo.value.hoscode//'1000_0'//doctorInfo.value.hoscode
   //医生的id 
-  let scheduleId = '6225753136a9ba1be763dc18'//doctorInfo.value.id
+  let scheduleId =doctorInfo.value.id// '6225753136a9ba1be763dc18'//doctorInfo.value.id
   // 就诊人
-  let patientId =206// userArr.value[currentIndex.value].id
+  let patientId = userArr.value[currentIndex.value].id//206// userArr.value[currentIndex.value].id
 // console.log(patientId,hoscode,scheduleId,'99');
 
 
