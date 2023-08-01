@@ -192,6 +192,13 @@ const login = async () => {
     await userStore.userLogin(loginParams)
     //关闭loginDialog
     userStore.visiable = false
+    //获取url的query参数
+    let redirect = $route.query.redirect;
+    if(redirect){
+      $router.push(redirect as string);
+    }else{
+      $router.push('/home');
+    }
 
   } catch (error) {
     ElMessage({

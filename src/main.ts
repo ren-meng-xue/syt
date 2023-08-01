@@ -32,5 +32,5 @@ app.use(ElementPlus,{
   locale: zhCn,
 })
 app.use(pinia)
-
+import './permissition'
 app.mount('#app')
