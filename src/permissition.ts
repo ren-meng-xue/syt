@@ -2,6 +2,7 @@
 //引入路由器
 import router from "./router";
 //引入进度条
+// @ts-ignore
 import Nprogress from 'nprogress';
 //引入用户相关的仓库
 import useUserStore from '@/store/modules/user';
@@ -20,7 +21,7 @@ router.beforeEach((to, from, next) => {
     //访问路由组件的之前,进度条开始动
     Nprogress.start();
     //动态设置网页左上角的标题
-    document.title = `尚医通-${to.meta.title}`;
+    document.title = `尚医通-${to.meta?.title}`;
     //判断用户是否登录-token
     let token = userStore.userInfo.token;
     //用户登陆了
