@@ -1,8 +1,8 @@
 //定义详情模块数据ts类型
 export interface ResponseData {
-  code:number;
-  message:string;
-  ok:boolean;
+    code: number,
+    message: string,
+    ok: boolean
 }
 //代表医院详情的数据
 export interface HosPitalDetail {
@@ -39,53 +39,53 @@ export interface HosPitalDetail {
 }
 
 //医院详情返回数据ts
-export interface HospitalDetail extends ResponseData{
-  data:HosPitalDetail
+export interface HospitalDetail extends ResponseData {
+    data: HosPitalDetail
 }
+
 
 //代表医院科室的数据
-export interface Department {
-  depcode: string,
-  depname:string,
-  children?:Department[]
+export interface Deparment {
+    "depcode": string,
+    "depname": string,
+    "children"?: Deparment[]
 }
+
 //代表存储科室数组类型
-export type DepartmentArr= Department[]
-
+export type DeparmentArr = Deparment[];
 //获取科室接口返回的数据类型
-
-export interface DepartmentResponseData extends ResponseData {
-  data:DepartmentArr
+export interface DeparmentResponseData extends ResponseData {
+    data: DeparmentArr
 }
 
-//用户登陆接口需要携带参数的类型
-
+//用户登录接口需要携带参数类型
 export interface LoginData {
-  phone:string
-  code:string
+    phone: string,
+    code: string
 }
 
-//登陆接口返回用户信息的ts类型
-export interface userInfo{
-  name:string,
-  token:string
+//登录接口返回用户信息数据
+export interface UserInfo {
+    name: string,
+    token: string
 }
-//d登陆接口返回的数据的 ts类型
+//登录接口返回的数据的ts类型
 export interface UserLoginResponseData extends ResponseData {
-  data:userInfo
+    data: UserInfo
 }
 
-//定义微信扫码登陆返回的数据的ts类型
+
+//定义微信扫码登录返回的数据的ts类型
 export interface WXLogin {
-  redirectUri:string,
-  appid:string,
-  scope:string,
-  state:string
+    "redirectUri": string,
+    "appid": string,
+    "scope": string,
+    "state": string
 }
 
-export interface WxLoginRespnsetData extends ResponseData{
-  data:WXLogin
-} 
+export interface WXLoginResponseData extends ResponseData {
+    data: WXLogin
+}
 
 
 export interface BaseMap {
@@ -106,6 +106,7 @@ export interface WorkData {
     "availableNumber": number,
     "status": number
 }
+
 export type BookingScheduleList = WorkData[]
 
 export interface HospitalWordData extends ResponseData {
@@ -115,7 +116,6 @@ export interface HospitalWordData extends ResponseData {
         baseMap: BaseMap
     }
 }
-
 
 
 //代表的是一个医生的数据
@@ -149,7 +149,6 @@ export type DocArr = Doctor[];
 export interface DoctorResponseData extends ResponseData {
     data: DocArr
 }
-
 
 
 
@@ -191,7 +190,6 @@ export type UserArr = User[];
 export interface UserResponseData extends ResponseData {
     data: UserArr
 }
-
 
 //获取某一个挂号医生数据详情
 

@@ -12,6 +12,8 @@ import 'element-plus/dist/index.css'
 import HospitalTop from '@/components/hospital_top/index.vue'
 import HosiptalBottom from '@/components/hospital_bottom/index.vue'
 import Login from '@/components/login/index.vue'
+//引入就诊人组件
+import visitorVue from './components/visitor/visitor.vue'
 //@ts-ignore 忽略ts的校验文件
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 //引入大仓库
@@ -21,6 +23,8 @@ const app =createApp(App)
 app.component('HospitalTop', HospitalTop);
 app.component('HosiptalBottom', HosiptalBottom);
 app.component('Login',Login)
+//就诊人组件
+app.component('visitorVue',visitorVue)
 //安装vue-router
 app.use(router)
 
